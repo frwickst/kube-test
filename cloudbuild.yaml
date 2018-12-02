@@ -1,0 +1,19 @@
+steps:
+# Build main image using :latest as build cache
+- name: 'gcr.io/cloud-builders/docker'
+  args: [
+    'build',
+    '--cache-from', 'eu.gcr.io/$PROJECT_ID/kube-hackathon:$COMMIT_SHA',
+    '-f', 'Dockerfile',
+    '-t', 'gcr.io/$PROJECT_ID/kube-test:latest',
+    '-t', 'gcr.io/$PROJECT_ID/kube-test:$COMMIT_SHA',
+    '.'
+]
+
+# app image is pushed to Google Container Registry
+images: [
+  'gcr.io/$PROJECT_ID/kube-test:$COMMIT_SHA',
+  'gcr.io/$PROJECT_ID/kube-test:latest'
+]
+
+###
